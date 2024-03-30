@@ -160,14 +160,9 @@
                             <i class="fas fa-key mr-2"></i> {% trans 'Change password' %}
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="{% url 'admin:logout' %}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <a href="{% url 'admin:logout' %}" class="dropdown-item">
                             <i class="fas fa-users mr-2"></i> {% trans 'Log out' %}
                         </a>
-                        <form id="logout-form" action="{% url 'admin:logout' %}" method="POST" style="display: none;">
-                            {% csrf_token %}
-                        </form>
-                                             
-  
                         {% get_user_menu user request.current_app|default:"admin" as user_menu %}
                         {% for link in user_menu %}
                             <div class="dropdown-divider"></div>
@@ -213,11 +208,36 @@
 
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column {{ jazzmin_ui.sidebar_list_classes }}" data-widget="treeview" role="menu" data-collapsible="false">
+                            <li class="nav-item">
+                                <a href="/my_page/" class="nav-link">
+                                    <i class="nav-icon fas fa-chart-bar"></i>
+                                    <p>{% trans 'Analytics' %}</p>
+                                </a>
+                            </li>
+
+                            {% if jazzmin_settings.navigation_expanded and routes %}
+                                {% for route in routes %}
+                                    
+                                    <li class="nav-item">
+                                    {% if route.url %}
+                                        <a href="{{ route.url }}" class="nav-link">
+                                            <i class="nav-icon fas fa-circle"></i> <p>{{ route.name }}</p>
+                                        </a>
+                                    {% else %}
+                                        <span class="nav-link disabled">
+                                            <i class="nav-icon fas fa-circle"></i> <p>{{ route.name }}</p>
+                                        </span>
+                                    {% endif %}
+                                    </li>
+                            
+                                {% endfor %}
+                            {% endif %}
+
 
                             <li class="nav-item">
                                 <a href="{% url 'admin:index' %}" class="nav-link">
-                                    <i class="nav-icon fas fa-th-large"></i>
-                                    <p>{% trans 'Dashboard' %}</p>
+                                    <i class="nav-icon fas fa-database"></i>
+                                    <p>{% trans 'Data Management' %}</p>
                                 </a>
                             </li>
 
